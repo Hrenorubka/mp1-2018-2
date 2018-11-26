@@ -12,7 +12,7 @@ using namespace std;
 
 typedef struct
 {
-	char name[200];
+	char name[100];
 	long  calibre;
 }FiLE;
 
@@ -216,24 +216,27 @@ void Mavrodi(FiLE *a, int length)
 	}
 }
 
-// ТЕЛО, Где мое Тело???
+// ТЕЛО, Где мое Тело????
 
 void main()
 {
+
 	int exit = 0;
 	while (exit == 0)
 	{
 		setlocale(LC_ALL, "Rus");
 		clock_t time;
 		int choose;
+		//FiLE pam_pam[30000];
+		FiLE *ykaz_pam_pam = NULL, *ykaz_b = NULL;
+		//FiLE b[30000];
+
+		//int sh = 0;
 		struct _finddata_t c_file;
 		intptr_t hFile;
 		char path[200];
 		int count = 0;
-		FiLE pam_pam[1000];
-		FiLE b[1000];
 		char string[200];
-		int sh = 0;
 		printf("Введите путь к фалам в формате c:\\temp\n");
 		gets_s(string);
 		strcat(string, "\\*.*");
@@ -245,19 +248,27 @@ void main()
 			printf("ФАЙЛ%24c   РАЗМЕР\n", ' ');
 			printf("----%24c   ----\n", ' ');
 			do {
+				count++;
+			} while (_findnext(hFile, &c_file) == 0);
+			ykaz_pam_pam = (FiLE *)malloc(count * sizeof(FiLE));
+			ykaz_b = (FiLE *)malloc(count * sizeof(FiLE));
+			hFile = _findfirst(string, &c_file);
+			count = 0;
+			do {
 				char buffer[30];
-				ctime_s(buffer, _countof(buffer), &c_file.time_write);
-				if (count <= 200)
-				{
-					pam_pam[sh].calibre = c_file.size;
-					strcpy(pam_pam[sh].name, c_file.name);
-					printf("%-24.12s %10ld\n", c_file.name, c_file.size);
-					sh++;
-				}
+				ykaz_pam_pam[count].calibre = c_file.size;
+				strcpy(ykaz_pam_pam[count].name, c_file.name);
+				printf("%-24.12s %10ld\n", c_file.name, c_file.size);
 				count++;
 			} while (_findnext(hFile, &c_file) == 0);
 			_findclose(hFile);
 		}
+		/*for (int i = 0; i <= sh - 1; i++)
+		{
+			pam_pam[i].calibre = rand() % 1000;
+			b[i].calibre = 0;
+			printf("%-24.12c  %10ld\n", pam_pam[i].name, pam_pam[i].calibre);
+		}*/
 		printf("Выберете каким способом сориторовать:\n1) Пузырьком\n2) Встаками\n3) Слиянием\n4) Выбором\n5) Пирамидой\n6) Быстрой сортировкой\n");
 		scanf_s("%d", &choose);
 		printf("\n\n");
@@ -266,32 +277,32 @@ void main()
 		{
 		case 1:
 		{
-			Pyzir(pam_pam, sh - 1);
+			Pyzir(ykaz_pam_pam, count - 1);
 			break;
 		}
 		case 2:
 		{
-			Vstav(pam_pam, sh - 1);
+			Vstav(ykaz_pam_pam, count - 1);
 			break;
 		}
 		case 3:
 		{
-			SIMOOOOON_SLIYANIE(pam_pam, b, 0, sh - 1);
+			SIMOOOOON_SLIYANIE(ykaz_pam_pam, ykaz_b, 0, count - 1);
 			break;
 		}
 		case 4:
 		{
-			I_MUST_CHOOOSE(pam_pam, sh - 1);
+			I_MUST_CHOOOSE(ykaz_pam_pam, count - 1);
 			break;
 		}
 		case 5:
 		{
-			Mavrodi(pam_pam, sh - 1);
+			Mavrodi(ykaz_pam_pam, count - 1);
 			break;
 		}
 		case 6:
 		{
-			Qsort(pam_pam, 0, sh - 1);
+			Qsort(ykaz_pam_pam, 0, count - 1);
 			break;
 		}
 		}
@@ -299,8 +310,8 @@ void main()
 		printf("Результат сортировки:\n\n");
 		printf("ФАЙЛ%24c   РАЗМЕР\n", ' ');
 		printf("----%24c   ----\n", ' ');
-		for (int i = 0; i <= sh - 1; i++)
-			printf("%-24.12s  %10ld\n", pam_pam[i].name, pam_pam[i].calibre);
+		for (int i = 0; i <= count - 1; i++)
+			printf("%-24.12s  %10ld\n", ykaz_pam_pam[i].name, ykaz_pam_pam[i].calibre);
 		if ((int)time >= 1)
 			printf("\nВремя программы: %d мс\nЕсли хотите еще посортировать введите 0\n", (int)time);
 		else
@@ -313,6 +324,8 @@ void main()
 			if (choose == 1)
 				system("@cls||clear");
 			gets_s(string);
+			free(ykaz_b);
+			free(ykaz_pam_pam);
 		}
 	}
 }

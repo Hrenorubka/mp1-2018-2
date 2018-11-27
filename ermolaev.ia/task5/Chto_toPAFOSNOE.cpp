@@ -39,7 +39,7 @@ void Pyzir(FiLE *a, int length)
 
 // ALGORITM NA 3
 
-void I_MUST_CHOOOSE(FiLE *a, int length)
+void Sort_Choose(FiLE *a, int length)
 {
 	int n_min, n_max;
 	FiLE obl;
@@ -72,7 +72,7 @@ void I_MUST_CHOOOSE(FiLE *a, int length)
 
 //√”––≈Õ-À¿√¿ÕÕ
 
-void GURRREN_LAGANNNNNNNN(FiLE *a, FiLE *b, int beg, int end, int mid)
+void Merge_parts(FiLE *a, FiLE *b, int beg, int end, int mid)
 {
 	int	k = beg;
 	int i = 0, j = 0;
@@ -97,27 +97,27 @@ void GURRREN_LAGANNNNNNNN(FiLE *a, FiLE *b, int beg, int end, int mid)
 	for (int k = beg; k <= end; k++)
 		a[k] = b[k - beg];
 }
-void SIMOOOOON_SLIYANIE(FiLE *a, FiLE *b, int beg, int end)
+void Sort_merge(FiLE *a, FiLE *b, int beg, int end)
 {
 	int mid;
 	mid = (end + beg) / 2;
 	if (end - beg == 0)
 		return;
-	SIMOOOOON_SLIYANIE(a, b, beg, mid);
-	SIMOOOOON_SLIYANIE(a, b, mid + 1, end);
-	GURRREN_LAGANNNNNNNN(a, b, beg, end, mid);
+	Sort_merge(a, b, beg, mid);
+	Sort_merge(a, b, mid + 1, end);
+	Merge_parts(a, b, beg, end, mid);
 }
 
 //¬ÒÚ‡‚ÎˇÚ¸ ÌÂ ÒÓÚËÓ‚‡Ú¸!
 
-int Something_Wrong(FiLE *a, int elem)
+int Find_elem(FiLE *a, int elem)
 {
 	int i = 0;
 	while (a[i].calibre < a[elem].calibre)
 		i++;
 	return i;
 }
-void Vstav(FiLE *a, int length)
+void Inserts(FiLE *a, int length)
 {
 	int max_sponk = 0, i = 0;
 	FiLE obl;
@@ -134,7 +134,7 @@ void Vstav(FiLE *a, int length)
 	}
 	for (int i = max_sponk + 1; i <= length; i++)
 	{
-		int res = Something_Wrong(a, i);
+		int res = Find_elem(a, i);
 		obl = a[i];
 		for (int j = i; j > res; j--)
 			a[j] = a[j - 1];
@@ -203,7 +203,7 @@ void CreatePyramid(FiLE *a, int length)
 			a[2 * i + 2] = obl;
 		}
 }
-void Mavrodi(FiLE *a, int length)
+void Sort_pyramid(FiLE *a, int length)
 {
 	FiLE obl;
 	CreatePyramid(a, length);
@@ -282,22 +282,22 @@ void main()
 		}
 		case 2:
 		{
-			Vstav(ykaz_pam_pam, count - 1);
+			Inserts(ykaz_pam_pam, count - 1);
 			break;
 		}
 		case 3:
 		{
-			SIMOOOOON_SLIYANIE(ykaz_pam_pam, ykaz_b, 0, count - 1);
+			Sort_merge(ykaz_pam_pam, ykaz_b, 0, count - 1);
 			break;
 		}
 		case 4:
 		{
-			I_MUST_CHOOOSE(ykaz_pam_pam, count - 1);
+			Sort_Choose(ykaz_pam_pam, count - 1);
 			break;
 		}
 		case 5:
 		{
-			Mavrodi(ykaz_pam_pam, count - 1);
+			Sort_pyramid(ykaz_pam_pam, count - 1);
 			break;
 		}
 		case 6:
